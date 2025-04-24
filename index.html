@@ -21,6 +21,11 @@
       border: 1px solid #ccc;
       border-radius: 0.5em;
     }
+    .other-students {
+      margin-top: 1em;
+      font-size: 0.9em;
+      color: #555;
+    }
   </style>
 </head>
 <body>
@@ -42,7 +47,7 @@
         name: "홍길동",
         number: "2-1",
         juminHash: "a7e2e1e0a3fc177d3182179c94744a79a27557e25a1d41ff34631d28fc275ac1",
-        school: "서울고",
+        school: "서울초등학교",
         grade: "3학년",
         time: "1기수 10~11시"
       },
@@ -50,7 +55,7 @@
         name: "김철수",
         number: "2-2",
         juminHash: "abf61e3619c94f6bffba93526cb0d2979308ec03a1433161fd112d6c3fbc53dc",
-        school: "부산고",
+        school: "부산초등학교",
         grade: "2학년",
         time: "1기수 11~12시"
       },
@@ -58,7 +63,7 @@
         name: "이영희",
         number: "2-3",
         juminHash: "9b6bb1f1270983ec2a0c01539a01f6ffbca0849b0b508bc04bd77e5c3650e4e5",
-        school: "대전여고",
+        school: "대전초등학교",
         grade: "1학년",
         time: "1기수 12~13시"
       },
@@ -66,7 +71,7 @@
         name: "테스트용",
         number: "2-4",
         juminHash: "afafcc5350f63d28b3cf56fdb7975be8ee5621c4518d9d6b661fa21534eabfe9",
-        school: "테스트고",
+        school: "테스트초등학교",
         grade: "3학년",
         time: "2기수 14~15시"
       }
@@ -85,11 +90,20 @@
       const person = people.find(p => p.juminHash === hash);
 
       if (person) {
-        resultDiv.innerHTML = `<strong>이름:</strong> ${person.name}<br>
-                               <strong>번호:</strong> ${person.number}<br>
-                               <strong>학교:</strong> ${person.school}<br>
-                               <strong>학년:</strong> ${person.grade}<br>
-                               <strong>수업시간:</strong> ${person.time}`;
+        let output = `<strong>이름:</strong> ${person.name}<br>
+                      <strong>번호:</strong> ${person.number}<br>
+                      <strong>학교:</strong> ${person.school}<br>
+                      <strong>학년:</strong> ${person.grade}<br>
+                      <strong>수업시간:</strong> ${person.time}`;
+
+        const others = people.filter(p => p.juminHash !== hash)
+                             .map(p => `번호: ${p.number} / 수업시간: ${p.time}`)
+                             .join('<br>');
+
+        output += `<div class="other-students">
+                      <br><strong>수업 정보:</strong><br>${others}
+                   </div>`;
+        resultDiv.innerHTML = output;
       } else {
         resultDiv.textContent = '일치하는 정보가 없습니다.';
       }
@@ -99,6 +113,23 @@
       if (event.key === "Enter") {
         searchPerson();
       }
+    });
+
+    // F12, 우클릭, Ctrl+U 등 차단
+    document.addEventListener('keydown', function (e) {
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+        (e.ctrlKey && e.key === 'U')
+      ) {
+        e.preventDefault();
+        alert("보안상 기능이 제한되었습니다.");
+      }
+    });
+
+    document.addEventListener('contextmenu', function (e) {
+      e.preventDefault();
+      alert("마우스 오른쪽 버튼은 사용할 수 없습니다.");
     });
   </script>
 </body>
