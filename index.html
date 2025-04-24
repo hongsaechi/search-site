@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>검색기_test</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2em;
+      background-color: #f9f9f9;
+    }
+    input, button {
+      font-size: 1em;
+      padding: 0.5em;
+      margin-top: 1em;
+    }
+    .result {
+      margin-top: 2em;
+      padding: 1em;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 0.5em;
+    }
+  </style>
+</head>
+<body>
+  <h1>검색기_test</h1>
+  <p>주민번호 전체를 입력하세요 (예: 030101-3456789):</p>
+  <input type="text" id="jumin" placeholder="예: 030101-3456789">
+  <button onclick="searchPerson()">검색</button>
+
+  <div class="result" id="result"></div>
+
+  <script>
+    async function sha256(str) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    const people = [
+      {
+        name: "홍길동",
+        number: "2-1",
+        juminHash: "a7e2e1e0a3fc177d3182179c94744a79a27557e25a1d41ff34631d28fc275ac1",
+        school: "서울고",
+        grade: "3학년",
+        time: "1기수 10~11시"
+      },
+      {
+        name: "김철수",
+        number: "2-2",
+        juminHash: "abf61e3619c94f6bffba93526cb0d2979308ec03a1433161fd112d6c3fbc53dc",
+        school: "부산고",
+        grade: "2학년",
+        time: "1기수 11~12시"
+      },
+      {
+        name: "이영희",
+        number: "2-3",
+        juminHash: "9b6bb1f1270983ec2a0c01539a01f6ffbca0849b0b508bc04bd77e5c3650e4e5",
+        school: "대전여고",
+        grade: "1학년",
+        time: "1기수 12~13시"
+      },
+      {
+        name: "테스트용",
+        number: "2-4",
+        juminHash: "afafcc5350f63d28b3cf56fdb7975be8ee5621c4518d9d6b661fa21534eabfe9",
+        school: "테스트고",
+        grade: "3학년",
+        time: "2기수 14~15시"
+      }
+    ];
+
+    async function searchPerson() {
+      const input = document.getElementById('jumin').value.trim();
+      const resultDiv = document.getElementById('result');
+
+      if (!input) {
+        resultDiv.textContent = '주민번호를 입력하세요.';
+        return;
+      }
+
+      const hash = await sha256(input);
+      const person = people.find(p => p.juminHash === hash);
+
+      if (person) {
+        resultDiv.innerHTML = `<strong>이름:</strong> ${person.name}<br>
+                               <strong>번호:</strong> ${person.number}<br>
+                               <strong>학교:</strong> ${person.school}<br>
+                               <strong>학년:</strong> ${person.grade}<br>
+                               <strong>수업시간:</strong> ${person.time}`;
+      } else {
+        resultDiv.textContent = '일치하는 정보가 없습니다.';
+      }
+    }
+
+    document.getElementById("jumin").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        searchPerson();
+      }
+    });
+  </script>
+</body>
+</html>
