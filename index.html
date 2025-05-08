@@ -30,8 +30,8 @@
 </head>
 <body>
   <h1>Test_v.01</h1>
-  <p>주민번호 전체를 입력해주세요 (예: 123456-1234567):</p>
-  <input type="text" id="jumin" placeholder="예: 123456-1234567">
+  <p>생년월일 전체를 입력해주세요 (예: 20251201,20100101):</p>
+  <input type="text" id="jumin" placeholder="예: 20100101">
   <button onclick="searchPerson()">검색</button>
 
   <div class="result" id="result"></div>
@@ -54,7 +54,7 @@
       {
         name: "테스트용",
         number: "0-1",
-        juminHash: "afafcc5350f63d28b3cf56fdb7975be8ee5621c4518d9d6b661fa21534eabfe9",
+        juminHash: "7746b8d8388bc30a9f320d8462740b5a1dd35df753b227a73e99dda04eb05228",
         school: "테스트초등학교",
         grade: "3학년",
         time: "2기수 14~15시"
@@ -62,43 +62,12 @@
       {
         name: "아무개",
         number: "0-2",
-        juminHash: "0a21743f3e939f23a21127dab4aa31ecdb3952a2e258a85cb89a9e5583b2b55f",
+        juminHash: "f7cf4f613276264b5ecbca6e762f25000bc2dfa58d571a9469cff603eeaec5e1",
         school: "송흥초등학교",
         grade: "6학년",
         time: "5기수 10~11시"
       }
-      /*,
-      {
-        name: "김민서",
-        number: "1-1",
-        juminHash: "afafcc5350f63d28b3cf56fdb7975be8ee5621c4518d9d6b661fa21534eabfe9",
-        school: "영광초등학교",
-        grade: "6학년",
-        time: "1기수 10~11시"
-      },
-      {
-        name: "김서윤",
-        number: "1-2",
-        juminHash: "afafcc5350f63d28b3cf56fdb7975be8ee5621c4518d9d6b661fa21534eabfe9",
-        school: "영광초등학교",
-        grade: "3학년",
-        time: "1기수 10~11시"
-      },
-      {
-        name: "김승윤",
-        number: "1-3",
-        juminHash: "afafcc5350f63d28b3cf56fdb7975be8ee5621c4518d9d6b661fa21534eabfe9",
-        school: "영광초등학교",
-        grade: "6학년",
-        time: "1기수 10~11시"
-      },{
-        name: "아잘리야",
-        number: "1-4",
-        juminHash: "afafcc5350f63d28b3cf56fdb7975be8ee5621c4518d9d6b661fa21534eabfe9",
-        school: "영광초등학교",
-        grade: "4학년",
-        time: "1기수 10~11시"
-      }*/
+      
     ];
 
     async function searchPerson() {
