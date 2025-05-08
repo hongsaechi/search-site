@@ -2,17 +2,23 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>2025_학생승마_강습시간</title>
+  <title>2025_영광승마장_학생승마_강습시간_검색기</title>
   <style>
     body {
       font-family: sans-serif;
       margin: 2em;
       background-color: #f9f9f9;
     }
-    input, button {
+    .input-group {
+      display: flex;
+      gap: 0.5em;
+      align-items: center;
+    }
+    input, button, select {
       font-size: 1em;
       padding: 0.5em;
       margin-top: 1em;
+      height: 2.5em;
     }
     .result {
       margin-top: 2em;
@@ -29,10 +35,19 @@
   </style>
 </head>
 <body>
-  <h1>Test_v.01</h1>
-  <p>생년월일 전체를 입력해주세요 (예: 20251201,20100101):</p>
-  <input type="text" id="jumin" placeholder="예: 20100101">
-  <button onclick="searchPerson()">검색</button>
+  <h1>2025_영광승마장_학생승마_강습시간_검색기</h1>
+  <p>생년월일 8자리를 입력하고 학교를 선택하세요 (예: 20251231):</p>
+  <div class="input-group">
+    <select id="school">
+      <option value="">학교 선택</option>
+      <option value="서울초등학교">서울초등학교</option>
+      <option value="부산초등학교">부산초등학교</option>
+      <option value="대전초등학교">대전초등학교</option>
+      <option value="테스트초등학교">테스트초등학교</option>
+    </select>
+    <input type="text" id="birth" placeholder="예: 20251231">
+    <button onclick="searchPerson()">검색</button>
+  </div>
 
   <div class="result" id="result"></div>
 
@@ -45,42 +60,50 @@
     const people = [
       {
         name: "홍길동",
-        number: "0-1",
-        juminHash: "27e92cf4edaa86a4ad7929ad875d549e6a4639224f7fe3458602af2843f2b45b",
+        number: "2-1",
+        token: "27e92cf4edaa86a4ad7929ad875d549e6a4639224f7fe3458602af2843f2b45b",
         school: "서울초등학교",
         grade: "3학년",
         time: "1기수 10~11시"
       },
       {
+        name: "김철수",
+        number: "2-2",
+        juminHash: "abf61e3619c94f6bffba93526cb0d2979308ec03a1433161fd112d6c3fbc53dc",
+        school: "부산초등학교",
+        grade: "2학년",
+        time: "1기수 11~12시"
+      },
+      {
+        name: "이영희",
+        number: "2-3",
+        juminHash: "9b6bb1f1270983ec2a0c01539a01f6ffbca0849b0b508bc04bd77e5c3650e4e5",
+        school: "대전초등학교",
+        grade: "1학년",
+        time: "1기수 12~13시"
+      },
+      {
         name: "테스트용",
-        number: "0-1",
-        juminHash: "7746b8d8388bc30a9f320d8462740b5a1dd35df753b227a73e99dda04eb05228",
+        number: "2-4",
+        juminHash: "1f0992505a60f0ec705731f999d5476fc2a1ec60e0bd6932afbb383188d47b24",
         school: "테스트초등학교",
         grade: "3학년",
         time: "2기수 14~15시"
-      },
-      {
-        name: "아무개",
-        number: "0-2",
-        juminHash: "f7cf4f613276264b5ecbca6e762f25000bc2dfa58d571a9469cff603eeaec5e1",
-        school: "송흥초등학교",
-        grade: "6학년",
-        time: "5기수 10~11시"
       }
-      
     ];
 
     async function searchPerson() {
-      const input = document.getElementById('jumin').value.trim();
+      const input = document.getElementById('birth').value.trim();
+      const selectedSchool = document.getElementById('school').value;
       const resultDiv = document.getElementById('result');
 
-      if (!input) {
-        resultDiv.textContent = '주민번호를 입력하세요.';
+      if (!input || !selectedSchool) {
+        resultDiv.textContent = '생년월일과 학교를 모두 입력하세요.';
         return;
       }
 
       const hash = await sha256(input);
-      const person = people.find(p => p.juminHash === hash);
+      const person = people.find(p => p.juminHash === hash && p.school === selectedSchool);
 
       if (person) {
         let output = `<strong>이름:</strong> ${person.name}<br>
@@ -102,7 +125,7 @@
       }
     }
 
-    document.getElementById("jumin").addEventListener("keypress", function(event) {
+    document.getElementById("birth").addEventListener("keypress", function(event) {
       if (event.key === "Enter") {
         searchPerson();
       }
